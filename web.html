@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Repositoris</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+
+<div class="container">
+    <div class="well">
+        <h1>Repositoris GitHub</h1>
+        <p>Entra usuari de GitHub per veure els repositoris que té, la seva descripció i els seguidors de cada repositori</p>
+
+        <div class="form-group">
+            <label for="user">GitHub User:</label>
+            <input class="form-control" id="user" placeholder="Enter username" name="user">
+        </div>
+
+        <button id="submit" class="btn btn-default">Enviar</button>
+
+        <table class="table"  id="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Followers</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+
+<script>
+    $(document).ready(function(){
+        $('#submit').click(function(){
+            $.ajax({
+                type: 'GET',
+                url: "https://api.github.com/users/"+$('#user').val()+"/repos",
+                data: {get_param: 'value'},
+                dataType: 'json',
+                success: [function (data) {
+                    $.each(data, function(index, element) {
+                        $('#table').append(
+                            '<tr>' +
+                            '<td>'+ element.name +'</td>' +
+                            '<td>'+ element.description+'</td>' +
+                            '<td>'+ element.watchers_count+'</td>' +
+                            '</tr>'
+                        );
+                    });
+                }]
+            });
+        });
+    });
+</script>
+
+</html>
